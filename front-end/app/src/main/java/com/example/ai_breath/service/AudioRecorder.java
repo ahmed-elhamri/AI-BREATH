@@ -12,7 +12,7 @@ import java.io.*;
 
 public class AudioRecorder {
 
-    private static final int SAMPLE_RATE = 16000; // 16kHz = adapté pour la voix
+    private static final int SAMPLE_RATE = 16000;
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
 
@@ -21,18 +21,15 @@ public class AudioRecorder {
     private Thread recordingThread;
     private File wavFile;
 
-
     public File startRecording(File outputDir, String filename) {
         int bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT);
-
 
         recorder = new AudioRecord(
                 MediaRecorder.AudioSource.MIC,
                 SAMPLE_RATE,
                 CHANNEL_CONFIG,
                 AUDIO_FORMAT,
-                bufferSize
-        );
+                bufferSize);
 
         wavFile = new File(outputDir, filename);
         recorder.startRecording();
@@ -53,7 +50,6 @@ public class AudioRecorder {
             recordingThread = null;
 
             try {
-                // Convertir le fichier PCM temporaire en WAV
                 rawToWave(wavFile, wavFile);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -83,15 +79,14 @@ public class AudioRecorder {
         }
 
         try (DataOutputStream output = new DataOutputStream(new FileOutputStream(waveFile))) {
-            // WAV header
             writeWaveFileHeader(output, rawData.length, SAMPLE_RATE, 1, 16);
             output.write(rawData);
         }
     }
 
     private void writeWaveFileHeader(
-            DataOutputStream out, long totalAudioLen, long sampleRate, int channels, int bitsPerSample
-    ) throws IOException {
+            DataOutputStream out, long totalAudioLen, long sampleRate, int channels, int bitsPerSample)
+            throws IOException {
         long byteRate = sampleRate * channels * bitsPerSample / 8;
         long totalDataLen = totalAudioLen + 36;
 
@@ -99,12 +94,12 @@ public class AudioRecorder {
         out.writeInt(Integer.reverseBytes((int) totalDataLen));
         out.writeBytes("WAVE");
         out.writeBytes("fmt ");
-        out.writeInt(Integer.reverseBytes(16)); // Subchunk1Size
-        out.writeShort(Short.reverseBytes((short) 1)); // PCM format
+        out.writeInt(Integer.reverseBytes(16));
+        out.writeShort(Short.reverseBytes((short) 1));
         out.writeShort(Short.reverseBytes((short) channels));
         out.writeInt(Integer.reverseBytes((int) sampleRate));
         out.writeInt(Integer.reverseBytes((int) byteRate));
-        out.writeShort(Short.reverseBytes((short) (channels * bitsPerSample / 8))); // Block align
+        out.writeShort(Short.reverseBytes((short) (channels * bitsPerSample / 8)));
         out.writeShort(Short.reverseBytes((short) bitsPerSample));
         out.writeBytes("data");
         out.writeInt(Integer.reverseBytes((int) totalAudioLen));

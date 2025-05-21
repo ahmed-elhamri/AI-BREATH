@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions();
         }
 
-        // Start recording via image or title click
         recordImage.setOnClickListener(v -> {
             if (checkPermissions()) {
                 startRecordingUI();
@@ -87,19 +86,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Stop recording on clicking animation layout (GIF)
         animationLayout.setOnClickListener(v -> stopRecordingAndPreparePlayback());
 
-        // Audio controls
         playPauseButton.setOnClickListener(v -> togglePlayback());
 
-        // Send audio to backend
         submitButton.setOnClickListener(v -> sendAudioToServer());
 
-        // Record again from playback layout
         recordAgainButton.setOnClickListener(v -> resetForNewRecording());
 
-        // Record again button inside result card
         recordAgainResultButton.setOnClickListener(v -> resetForNewRecording());
     }
 
@@ -221,15 +215,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
     }
 
     private void togglePlayback() {
-        if (mediaPlayer == null) return;
+        if (mediaPlayer == null)
+            return;
 
         if (isPlaying) {
             mediaPlayer.pause();
@@ -266,7 +263,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetForNewRecording() {
         if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
+            if (mediaPlayer.isPlaying())
+                mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -289,13 +287,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.RECORD_AUDIO },
+                PERMISSION_REQUEST_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
             boolean allGranted = true;

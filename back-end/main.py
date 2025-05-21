@@ -7,7 +7,6 @@ import os
 import joblib
 import tempfile
 
-# === Load trained model ===
 model = joblib.load("breathing_model.pkl")
 labels_reverse = {
     0: "NORMALE",
@@ -15,19 +14,15 @@ labels_reverse = {
     2: "APNÉE"
 }
 
-# === FastAPI app ===
 app = FastAPI()
 
-# === MFCC Extraction ===
 def extract_mfcc_mean(file_path):
     y, sr = librosa.load(file_path, sr=None)
     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
     return np.mean(mfcc, axis=1)
 
-# === Endpoint ===
 @app.post("/analyze_breath")
 async def analyze_breath(file: UploadFile = File(...)):
-    # Save file temporarily
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
         tmp.write(await file.read())
         tmp_path = tmp.name
@@ -53,6 +48,5 @@ async def analyze_breath(file: UploadFile = File(...)):
     finally:
         os.remove(tmp_path)
 
-# === Run server ===
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)

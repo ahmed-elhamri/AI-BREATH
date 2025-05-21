@@ -24,7 +24,7 @@ public class AudioRepository {
 
     public AudioRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.22.38:8000/") // ou ton IP locale réelle
+                .baseUrl("http://192.168.22.38:8000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -47,11 +47,9 @@ public class AudioRepository {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                // Log the error or handle it as needed
                 t.printStackTrace();
                 liveData.postValue(null);
             }
         });
     }
 }
-

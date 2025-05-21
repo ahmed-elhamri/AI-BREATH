@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#F4F4F4">
 
-    <!-- Main Content Container - This will center all content vertically and horizontally -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Title -->
         <TextView
             android:id="@+id/recordTitle"
             android:layout_width="wrap_content"
@@ -29,7 +27,6 @@
             android:textColor="#111111"
             android:textSize="22sp" />
 
-        <!-- Record Image -->
         <ImageView
             android:id="@+id/recordImage"
             android:layout_width="130dp"
@@ -39,7 +36,6 @@
             android:contentDescription="Record"
             android:src="@mipmap/voice_memos" />
 
-        <!-- Recording GIF Layout -->
         <LinearLayout
             android:id="@+id/animationLayout"
             android:layout_width="wrap_content"
@@ -68,7 +64,6 @@
                 android:layout_gravity="center" />
         </LinearLayout>
 
-        <!-- Playback Layout -->
         <LinearLayout
             android:id="@+id/playbackLayout"
             android:layout_width="346dp"
@@ -138,7 +133,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Result Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/resultCard"
             android:layout_width="match_parent"
